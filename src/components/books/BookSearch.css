@@ -1,0 +1,4 @@
+.book-description {
+    max-height: 150px;
+    overflow-y: scroll;
+}
