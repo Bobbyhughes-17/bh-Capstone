@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getAllPrompts, addPrompt } from "../ApiManager";
-
-function PromptPage() {
+import RandomTbr from "./RandomTbr";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Prompts.css";
+function Prompts() {
   const [currentPrompt, setCurrentPrompt] = useState("");
   const [newPromptText, setNewPromptText] = useState("");
 
@@ -23,45 +26,57 @@ function PromptPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-4xl font-bold mt-8 mb-12 text-gray-700">Prompt Page</h1>
-  
-      <div className="w-4/5 max-w-md p-4 rounded-lg shadow-lg bg-white">
-        <p className="text-3xl mb-4 text-center text-gray-700 font-bold">{currentPrompt}</p>
-        <button
-          className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-full w-full"
-          onClick={handleGeneratePrompt}
-        >
-          Generate Prompt
-        </button>
-      </div>
-  
-      <div className="w-4/5 max-w-md mt-8 p-4 rounded-lg shadow-lg bg-white">
-        <label
-          htmlFor="new-prompt-input"
-          className="block text-gray-700 font-bold mb-2"
-        >
-          Submit a Prompt:
-        </label>
-        <div className="flex">
-          <input
-            className="w-full rounded-l-lg py-2 px-4 text-gray-700 border-gray-400 border-2"
-            type="text"
-            id="new-prompt-input"
-            value={newPromptText}
-            onChange={(event) => setNewPromptText(event.target.value)}
-          />
-          <button
-            className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-full w-26 ml-2"
-            onClick={handleSubmitPrompt}
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1 className="text-center mt-5">Generate Random Reading Prompts!</h1>
+          <div className="border p-3 my-3">
+            <p className="lead">{currentPrompt}</p>
+            <Button
+              variant="primary"
+              className="mr-2"
+              onClick={handleGeneratePrompt}
+            >
+              Generate Prompt
+            </Button>
+          </div>
+
+          <div className="border p-3 my-3">
+            <Form>
+              <Form.Label htmlFor="new-prompt-input" className="lead">
+                Submit a Prompt:
+              </Form.Label>
+              <Form.Group className="new-prompt-textbox">
+                <Form.Control
+                  className="new-prompt-input"
+                  type="text"
+                  id="new-prompt-input"
+                  value={newPromptText}
+                  onChange={(event) => setNewPromptText(event.target.value)}
+                />
+                <button
+                  variant="success"
+                  className="mt-3"
+                  onClick={handleSubmitPrompt}
+                >
+                  Submit
+                </button>
+              </Form.Group>
+            </Form>
+          </div>
+        </Col>
+        <Col>
+          <h1 className="text-center">
+            For the indecisive, picky, can't make a call on anything... ever.
+            This button is for you!
+          </h1>
+          <div className="border p-3 my-3">
+            <RandomTbr />
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
-  
 }
 
-export default PromptPage;
+export default Prompts;

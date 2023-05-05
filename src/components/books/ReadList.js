@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { getReadList } from "../ApiManager";
+import { getReadList, addReview, getReviews } from "../ApiManager";
+
 import TbrList from "./TbrList";
+
+import ReviewList from "./ReviewList";
+import { Container, Row, Col, ListGroup, Button, Card } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./Book.css";
+import Review from "./Review";
 
 function ReadList() {
   const [readList, setReadList] = useState([]);
   const [clickedBook, setClickedBook] = useState(null);
-  const [isHidden, setIsHidden] = useState(true);
-
-  const handleClick = (book) => {
-    if (clickedBook === book) {
-      setClickedBook(null);
-    } else {
-      setClickedBook(book);
-    }
-  };
-
-  const toggleHidden = () => {
-    setIsHidden(!isHidden);
-  };
+  const [booksWithReviews, setBooksWithReviews] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     getReadList().then((data) => {
       setReadList(data);
+    });
+
+    getReviews().then((reviews) => {
+      const reviewedBookIds = reviews.map((review) => review.bookId);
+      setBooksWithReviews(reviewedBookIds);
+      setReviews(reviews);
     });
   }, []);
 
@@ -31,49 +32,84 @@ function ReadList() {
   };
 
   return (
-    <div className="flex justify-between w-full">
-      <div className="w-1/2 pr-4">
-        <h1 className="read-custom"  onClick={toggleHidden} toggleHidden={toggleHidden} isHidden={isHidden}>
-          Read List
-        </h1>
-        {!isHidden && (
-          <ul className="divide-y divide-gray-300">
-            {readList.map((item) => (
-              <li
-                key={item.id}
-                className="flex mb-4 p-4 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
-                onClick={() => handleClick(item)}
-              >
-                {clickedBook === item && (
-                  <div className="w-1/4 mr-4">
-                    <img src={item.thumbnail} alt="Book cover" className="w-full rounded-md" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold text-gray-800">{item.title}</h2>
-                  {clickedBook === item && (
-                    <div className="mt-2">
-                      <p className="text-gray-700">
-                        <strong>Author:</strong> {item.authors.join(", ")}
-                      </p>
-                      <p className="text-gray-700">
-                        <strong>Pages:</strong> {item.pageCount} pages
-                      </p>
-                      <p className="text-gray-700">
-                        <strong>Published Date:</strong> {item.publishedDate}
-                      </p>
+    <Container>
+      <Row>
+        <Col md={4}>
+          <Card className="mt-5">
+            <Card.Header className="text-center">
+              <h1 className="header">Read List</h1>
+            </Card.Header>
+            <Card.Body>
+              <ListGroup className="my-3">
+                {readList.map((item) => (
+                  <ListGroup.Item
+                    variant="primary"
+                    key={item.id}
+                    className="d-flex mb-4 p-4 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                  >
+                    <div className="book-cover-container mr-4">
+                      <img
+                        src={item.thumbnail}
+                        alt="Book cover"
+                        className="book-cover"
+                      />
                     </div>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className={`w-full ${isHidden ? "hidden" : ""}`}>
-        <TbrList addToReadList={addToReadList} toggleHidden={toggleHidden} isHidden={isHidden} />
-      </div>
-    </div>
+
+                    <div className="">
+                      <h2 className="book-title">{item.title}</h2>
+
+                      <div className="book-details">
+                        <p className="book-author">
+                          <strong>Author:</strong> {item.authors.join(", ")}
+                        </p>
+                        <p className="book-pagecount">
+                          <strong>Pages:</strong> {item.pageCount} pages
+                        </p>
+                        <p className="book-publisheddate">
+                          <strong>Published Date:</strong> {item.publishedDate}
+                        </p>
+                      </div>
+                      {!booksWithReviews.includes(item.id) && (
+                        <Button
+                          variant="primary"
+                          className="mt-4 add-review-button"
+                          onClick={() => setClickedBook(item)}
+                        >
+                          Add Review
+                        </Button>
+                      )}
+                    </div>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <TbrList addToReadList={addToReadList} />
+        </Col>
+
+        <Col md={4}>
+          <ReviewList reviews={reviews} />
+        </Col>
+      </Row>
+
+      <Review
+        isOpen={clickedBook !== null}
+        onClose={() => setClickedBook(null)}
+        onSave={(review) => {
+          addReview(clickedBook.id, {
+            ...review,
+            thumbnail: clickedBook.thumbnail,
+          }).then((savedReview) => {
+            setBooksWithReviews([...booksWithReviews, savedReview.bookId]);
+            setReviews([...reviews, savedReview]);
+          });
+          setClickedBook(null);
+        }}
+        hasReview={booksWithReviews.includes(clickedBook?.id)}
+      />
+    </Container>
   );
 }
 

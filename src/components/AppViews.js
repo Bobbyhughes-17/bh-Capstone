@@ -1,12 +1,11 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
-
 import { BookSearch } from "./books/BookSearch";
 import Profile from "./profile/Profile";
 import ReadList from "./books/ReadList";
 import { addToReadList, addToTbReadList } from "./ApiManager";
 import TbrList from "./books/TbrList";
-import PromptPage from "./prompts/PromptPage";
+import Prompts from "./prompts/PromptPage";
 
 function AppViews() {
   const [readList, setReadList] = useState([]);
@@ -36,9 +35,9 @@ function AppViews() {
         <Route path="/books" element={<ReadList readList={readList} />} />
         <Route path="/books/tbr" element={<TbrList tbList={tbList} />} />
         <Route path="/search" element={<BookSearch />} />
-        </Route>
-        <Route path="/prompts" element={ <PromptPage /> } />
-        </Routes>
+      </Route>
+      <Route path="/prompts" element={<Prompts />} />
+    </Routes>
   );
 }
 

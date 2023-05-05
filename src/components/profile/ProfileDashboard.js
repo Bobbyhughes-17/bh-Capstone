@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getAllUsers, updateUser } from "../ApiManager";
 import Authorized from "../Authorized";
-
+import {
+  Container,
+  Button,
+  Form,
+  Row,
+  Col,
+  Image,
+  Card,
+} from "react-bootstrap";
+import "./Profile.css";
 function ProfileDashboard() {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -11,6 +20,8 @@ function ProfileDashboard() {
     username: "",
     bio: "",
   });
+
+  const formRef = useRef(null);
 
   useEffect(() => {
     getAllUsers().then(setUsers);
@@ -37,107 +48,108 @@ function ProfileDashboard() {
       });
   };
 
+  const handleEditClick = () => {
+    setShowForm(true);
+    formRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <Authorized>
-      <div className="profile-container">
-        <h2 className="profile-heading">Welcome, {users[0]?.name}!</h2>
-        
-          <div className="profile-details-column">
-            <div className="email">
-            <p className="profile-details-label">Email:</p>
-            <p className="profile-details-value">{users[0]?.email}</p>
-            </div>
-            <div className="username">
-            <p className="profile-details-label">Username:</p>
-            <p className="profile-details-value">{users[0]?.username}</p>
-            </div>
-            <div className="bio">
-            <p className="profile-details-label">Bio: </p>
-            <p className="profile-details-value">{users[0]?.bio}</p>
-          </div>
-          </div>
-          <div className="profile-actions">
+      <Container>
+        <h1 className="profile-heading">Welcome, {users[0]?.name}!</h1>
+        <Row className="profile-content">
+          <Col md={4} className="profile-details-column">
+            <Card className="profile-details-card">
+              <Image
+                src={users[0]?.avatar}
+                alt="Avatar"
+                className="profile-avatar"
+                roundedCircle
+              />
+              <Card.Body>
+                <Card.Title>{users[0]?.name}</Card.Title>
+                <Card.Subtitle className="mb-2">
+                  <strong>Username: </strong>
+
+                  {users[0]?.username}
+                </Card.Subtitle>
+                <Card.Text>
+                  <strong>Bio: </strong>
+                  {users[0]?.bio}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={8} className="profile-actions">
             {!showForm ? (
-              <button
+              <Button
                 className="profile-action-button profile-action-edit"
                 onClick={() => setShowForm(true)}
               >
                 Edit Profile
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
                 className="profile-action-button profile-action-cancel"
                 onClick={() => setShowForm(false)}
               >
                 Cancel
-              </button>
+              </Button>
             )}
-          </div>
-        
-        
-        {showForm && (
-          <form className="profile-edit-form" onSubmit={handleSubmit}>
-            <div className="form-field">
-            
-              <input
-                className="form-input"
-                id="name"
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-field">
-             
-              <input
-                className="form-input"
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-field">
-           
-              <input
-                className="form-input"
-                id="username"
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-field">
-              <input
-                className="form-input one"
-                id="bio"
-                type="text"
-                name="bio"
-                placeholder="Bio"
-                value={formData.bio}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-buttons">
-              <button className="form-button form-button-save" type="submit">
-                Save
-              </button>
-              <button
-                className="form-button form-button-cancel"
-                onClick={() => setShowForm(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
+
+            {showForm && (
+              <Form className="profile-edit-form" onSubmit={handleSubmit}>
+                <Form.Group controlId="name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="email">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="username">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter username"
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="bio">
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Enter bio"
+                    value={formData.bio}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Save
+                </Button>
+                <Button
+                  className="form-button form-button-cancel"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </Button>
+              </Form>
+            )}
+          </Col>
+        </Row>
+      </Container>
     </Authorized>
   );
 }

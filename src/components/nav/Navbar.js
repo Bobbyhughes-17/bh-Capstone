@@ -1,73 +1,87 @@
+import "./Navbar.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import {
+  Navbar,
+  Nav,
+  NavDropdown,
+  Offcanvas,
+  Form,
+  Button,
+  Container,
+} from "react-bootstrap";
 
-
-function Navbar() {
+function CustomNavbar() {
   const navigate = useNavigate();
-  const [active, setActive] = useState("nav__menu");
-  const [icon, setIcon] = useState("nav__toggler");
-  
+  const [expanded, setExpanded] = useState(false);
 
-  const navToggle = () => {
-    if (active === "nav__menu") {
-      setActive("nav__menu nav__active");
-    } else setActive("nav__menu");
-
-    if (icon === "nav__toggler") {
-      setIcon("nav__toggler toggle");
-    } else setIcon("nav__toggler");
-  };
   const handleLinkClick = () => {
-    setActive("nav__menu");
-    setIcon("nav__toggler");
+    setExpanded(false);
   };
 
   return (
-    <nav className="nav">
-      
-      <Link to="/" className="nav__brand profile">GR
-      
-      </Link>
-
-      <ul className={active}>
-        <li className="nav__item">
-          <Link to="/books" className="nav__link" onClick={handleLinkClick}>
-            Book Lists
-          </Link>
-        </li>
-        <li className="nav__item">
-          <Link to="/prompts" className="nav__link" onClick={handleLinkClick}>
-            Prompts
-          </Link>
-        </li>
-        <li className="nav__item">
-          <Link to="/search" className="nav__link" onClick={handleLinkClick}>
-            Search
-          </Link>
-        </li>
-        {localStorage.getItem("book_user") ? (
-          <li className="nav__item">
-            <Link
-              className="nav__link"
-              to=""
-              onClick={() => {
-                localStorage.removeItem("book_user");
-                navigate("/", { replace: true });
-              }}
-            >
-              Logout
-            </Link>
-          </li>
-        ) : null}
-      </ul>
-      <div onClick={navToggle} className={icon}>
-        <div className="line1"></div>
-        <div className="line2"></div>
-        <div className="line3"></div>
-      </div>
-    </nav>
+    <>
+      <Navbar expand={false} className="mb-3 custom-navbar">
+        <Container fluid>
+          <Navbar.Brand
+            as={Link}
+            to="/"
+            className="profile"
+            onClick={handleLinkClick}
+          >
+            GR
+          </Navbar.Brand>
+          <Navbar.Toggle
+            onClick={() => setExpanded(!expanded)}
+            aria-controls="offcanvasNavbar"
+          />
+          <Navbar.Offcanvas
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+            placement="end"
+            show={expanded}
+            onHide={() => setExpanded(false)}
+          >
+            <Offcanvas.Header closeButton className="offcanvas-header">
+              <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body className="offcanvas-body">
+              <Nav className="flex-column">
+                <Nav.Link
+                  as={Link}
+                  to="/books"
+                  onClick={handleLinkClick}
+                  className="nav-link"
+                >
+                  Book Lists
+                </Nav.Link>
+                <Nav.Link as={Link} to="/prompts" onClick={handleLinkClick}>
+                  Prompts
+                </Nav.Link>
+                <Nav.Link as={Link} to="/search" onClick={handleLinkClick}>
+                  Search
+                </Nav.Link>
+              </Nav>
+              <Nav>
+                {localStorage.getItem("book_user") ? (
+                  <NavDropdown title="Account" id="basic-nav-dropdown">
+                    <NavDropdown.Item
+                      onClick={() => {
+                        localStorage.removeItem("book_user");
+                        navigate("/", { replace: true });
+                      }}
+                    >
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                ) : null}
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Container>
+      </Navbar>
+    </>
   );
 }
 
-export default Navbar;
+export default CustomNavbar;
