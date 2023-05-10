@@ -10,6 +10,7 @@ import {
   Image,
   Card,
   Modal,
+  ListGroup,
 } from "react-bootstrap";
 import "./Profile.css";
 import BookRecommendations from "./BookRec";
@@ -186,6 +187,48 @@ function ProfileDashboard() {
             </Form>
           </Modal.Body>
         </Modal>
+        <Card className="useful-links-card">
+        <Card.Header className="useful-link-header">Useful Links</Card.Header>
+        <Card.Body>
+          <ListGroup className="useful-links-list">
+            <ListGroup.Item>
+              <a href="https://www.amazon.com/books-used-books-textbooks/b?ie=UTF8&node=283155">
+               Books at Amazon
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://books.google.com/">
+                  Google Books
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://www.thriftbooks.com/?&utm_source=google&utm_medium=cpc&utm_campaign=search_general_national&utm_adgroup=&utm_term=best%20book%20store&utm_content=475008855509&gclid=CjwKCAjwge2iBhBBEiwAfXDBR12N25kSAKvOsxLo8yrtg91TNfQMY9JRiIX4XQP_E-mzYRk3kQRpVRoCwBMQAvD_BwE">
+                Thriftbooks
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://bookoutlet.com/?gclid=CjwKCAjwge2iBhBBEiwAfXDBR4ZeBS6heKvQawb9HR9pgj1VZHxaBkzh6rQO8JFb_YvBTUKGPisVuxoCMYIQAvD_BwE&gclsrc=aw.ds">
+                Book Outlet
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://bookshop.org/">
+                Bookshop
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://www.betterworldbooks.com/">
+                Better World Books
+              </a>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <a href="https://libro.fm/">
+               Libro.fm
+              </a>
+            </ListGroup.Item>
+          </ListGroup>
+          </Card.Body>
+          </Card>
       </Container>
     </Authorized>
   );
