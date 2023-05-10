@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import { Button, Form } from "react-bootstrap";
+import "./Login.css"
 
 export const Register = (props) => {
   const [user, setUser] = useState({
@@ -56,46 +57,43 @@ export const Register = (props) => {
 
   return (
     <main style={{ textAlign: "center" }}>
-      <form className="form--login" onSubmit={handleRegister}>
+      <Form className="form--login" onSubmit={handleRegister}>
         <h1 className="h3 mb-3 font-weight-normal">
           Register for Gooder Reads, or not. Whatever.
         </h1>
-        <fieldset>
-          <label htmlFor="fullName"> Full Name </label>
-          <input
+        <Form.Group contolId="fullName">
+          <Form.Label htmlFor="fullName"> Full Name </Form.Label>
+          <Form.Control
             onChange={updateUser}
             type="text"
-            id="fullName"
             className="form-control"
             placeholder="Enter your name"
             required
             autoFocus
           />
-        </fieldset>
-        <fieldset>
-          <label htmlFor="email"> Email address </label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label> Email address </Form.Label>
+          <Form.Control
             onChange={updateUser}
             type="email"
-            id="email"
             className="form-control"
             placeholder="Email address"
             required
           />
-        </fieldset>
-        <fieldset>
-          <label htmlFor="username"> Username </label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="username"> Username </Form.Label>
+          <Form.Control
             onChange={updateUser}
             type="username"
-            id="username"
             className="form-control"
             placeholder="Username"
             required
           />
-        </fieldset>
-        <fieldset>
-          <input
+        </Form.Group>
+        <Form.Group contolId="isStaff">
+          <Form.Check
             onChange={(evt) => {
               const copy = { ...user };
               copy.isStaff = evt.target.checked;
@@ -104,15 +102,14 @@ export const Register = (props) => {
             type="checkbox"
             id="isStaff"
           />
-          <label htmlFor="email"> Employee or nah? Check if yah </label>
-        </fieldset>
-        <fieldset>
-          <button type="submit" className="registerbtn">
+        </Form.Group>
+        
+          <Button type="submit" className="registerbtn">
             {" "}
             Register{" "}
-          </button>
-        </fieldset>
-      </form>
+          </Button>
+       
+      </Form>
     </main>
   );
 };

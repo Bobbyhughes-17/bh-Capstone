@@ -2,3 +2,68 @@
   max-height: 150px;
   overflow-y: scroll;
 }
+
+.book-list {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding-top: 10px;
+  border-radius: 20px;
+}
+
+.card {
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1.25rem;
+  max-height: 500px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.text-gray-700 {
+  color: #4a5568;
+  font-size: 0.875rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  font-size: 16px;
+  border-radius: 25px;
+  padding: 12px 20px;
+  box-shadow: none;
+}
+
+.search-button {
+  font-size: 16px;
+  border-radius: 25px;
+  padding: 12px 20px;
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+.search-button:hover {
+  background-color: #0062cc;
+  border-color: #005cbf;
+}

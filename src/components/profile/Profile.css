@@ -1,59 +1,82 @@
+.profile-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
 .profile-heading {
-  font-size: 3rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.profile-details-label {
-  font-weight: bold;
-  margin-bottom: 0.25rem;
+.profile-details-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  padding: 20px;
 }
 
-.profile-details-value {
-  margin-bottom: 2rem;
+.profile-details-card .card-title {
+  font-size: 1.5em;
+  color: #1a1a1a;
+  margin-bottom: 10px;
 }
 
-.profile-action-button {
-  font-weight: bold;
-  margin-right: 1rem;
-}
-
-.profile-action-edit {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: #fff;
-}
-
-.profile-action-edit:hover {
-  background-color: #0062cc;
-  border-color: #005cbf;
-  color: #fff;
-}
-
-.profile-action-cancel {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: #fff;
-}
-
-.profile-action-cancel:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
-  color: #fff;
-}
-
-.profile-edit-form {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.form-button-cancel {
-  margin-left: 1rem;
+.profile-details-card .card-subtitle,
+.profile-details-card .card-text {
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .profile-avatar {
-  height: 250px;
-  width: 200px;
-  padding: 3px;
-  margin-left: 6px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.profile-actions {
+  margin-left: 20px;
+}
+
+.profile-action-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.profile-action-button:hover {
+  background-color: #0056b3;
+}
+
+.profile-edit-form {
+  margin-bottom: 20px;
+}
+
+.form-button {
+  margin-right: 10px;
+}
+
+.form-button.form-button-cancel {
+  background-color: #ccc;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Recommendations Card */
+.rec-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin-top: 33px;
+}
+
+.refresh-btn {
+  margin-top: 2px;
+  margin-left: 25px;
 }

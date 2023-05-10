@@ -7,18 +7,19 @@ export default function Review({ isOpen, onClose, onSave }) {
   const [reviewText, setReviewText] = useState("");
   const [rec, setRec] = useState("");
 
+  // function to update the rating state when the user selects a rating
   const handleRatingChange = (event) => {
     setRating(parseFloat(event.target.value));
   };
-
+  // function to update the user reviews
   const handleReviewTextChange = (event) => {
     setReviewText(event.target.value);
   };
-
+  // function to update recommendations
   const handleRecTextChange = (event) => {
     setRec(event.target.value);
   };
-
+  // function to handle saving reviews
   const handleSaveReview = () => {
     onSave({ rating, reviewText, rec });
     setRating(0);

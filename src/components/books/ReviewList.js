@@ -6,29 +6,33 @@ function ReviewList({ reviews }) {
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
 
+  // fetch list of all books and updating state
   useEffect(() => {
     fetchBooks().then((data) => {
       setBooks(data);
     });
   }, []);
-
+  // fetch all users and update state
   useEffect(() => {
     getAllUsers().then(setUsers);
   }, []);
 
   return (
     <Col md={12}>
-      <Card className="mt-5">
-        <Card.Header className="text-center">
+      <Card className="" style={{ minHeight: "1122px" }}>
+        <Card.Header className="">
           <h1 className="header">Reviews by {users[0]?.name} </h1>
         </Card.Header>
         <Card.Body>
-          <ListGroup>
+          <ListGroup
+            className=""
+            style={{ overflowY: "auto", maxHeight: "1000px" }}
+          >
             {reviews.map((review) => (
               <ListGroup.Item
                 variant="info"
                 key={review.id}
-                className="review-item"
+                className="d-flex mb-4 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
               >
                 <Row className="align-items-center">
                   <Col md={3}>

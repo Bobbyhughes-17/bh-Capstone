@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getReadList, addReview, getReviews } from "../ApiManager";
-
+import { getReadList, addReview, getReviews, newRead } from "../ApiManager";
 import TbrList from "./TbrList";
-
 import ReviewList from "./ReviewList";
 import { Container, Row, Col, ListGroup, Button, Card } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./Book.css";
 import Review from "./Review";
 
@@ -15,6 +13,7 @@ function ReadList() {
   const [booksWithReviews, setBooksWithReviews] = useState([]);
   const [reviews, setReviews] = useState([]);
 
+  // fetch readList and review data
   useEffect(() => {
     getReadList().then((data) => {
       setReadList(data);
@@ -27,27 +26,35 @@ function ReadList() {
     });
   }, []);
 
+  // function to add a book to read list
   const addToReadList = (book) => {
     setReadList([...readList, book]);
+  };
+  // function to update the read list
+  const updateReadList = (newReadList) => {
+    setReadList(newReadList);
   };
 
   return (
     <Container>
       <Row>
         <Col md={4}>
-          <Card className="mt-5">
-            <Card.Header className="text-center">
+          <Card className="" style={{ minHeight: "1122px" }}>
+            <Card.Header className="">
               <h1 className="header">Read List</h1>
             </Card.Header>
             <Card.Body>
-              <ListGroup className="my-3">
+              <ListGroup
+                className=""
+                style={{ overflowY: "auto", height: "1000px" }}
+              >
                 {readList.map((item) => (
                   <ListGroup.Item
                     variant="primary"
                     key={item.id}
                     className="d-flex mb-4 p-4 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
                   >
-                    <div className="book-cover-container mr-4">
+                    <div className="me-3">
                       <img
                         src={item.thumbnail}
                         alt="Book cover"
@@ -72,7 +79,7 @@ function ReadList() {
                       {!booksWithReviews.includes(item.id) && (
                         <Button
                           variant="primary"
-                          className="mt-4 add-review-button"
+                          className=""
                           onClick={() => setClickedBook(item)}
                         >
                           Add Review
@@ -86,7 +93,10 @@ function ReadList() {
           </Card>
         </Col>
         <Col md={4}>
-          <TbrList addToReadList={addToReadList} />
+          <TbrList
+            addToReadList={addToReadList}
+            updateReadList={updateReadList}
+          />
         </Col>
 
         <Col md={4}>

@@ -1,0 +1,11 @@
+img {
+    object-fit: contain;
+    height: 125px;
+    padding: 5px;
+    
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+

@@ -9,6 +9,8 @@ import {
   Button,
   Row,
   Card,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 
 export const BookSearch = () => {
@@ -17,13 +19,21 @@ export const BookSearch = () => {
   const [showDescription, setShowDescription] = useState("");
   const [description, setDescription] = useState("");
   const [bookDescriptions, setBookDescriptions] = useState({});
+  const [addedToTBR, setAddedToTBR] = useState(
+    JSON.parse(localStorage.getItem("addedToTBR")) || {}
+  );
+  const [addedToRead, setAddedToRead] = useState(
+    JSON.parse(localStorage.getItem("addedToRead")) || {}
+  );
 
+  // function to search books using google api
   const searchBooks = async () => {
     const data = await fetchBooks(query);
     setBooks(data);
   };
-
+  // function to add a book to the Read List
   const handleAddToReadList = async (book) => {
+    // creates an object with the relevant book info
     const read = {
       title: book.volumeInfo.title,
       authors: book.volumeInfo.authors,
@@ -31,9 +41,20 @@ export const BookSearch = () => {
       publishedDate: book.volumeInfo.publishedDate,
       thumbnail: book.volumeInfo.imageLinks.thumbnail,
     };
+
     await newRead(read);
+    setAddedToRead((prevState) => {
+      const newState = {
+        ...prevState,
+        [book.id]: true,
+      };
+      localStorage.setItem("addedToRead", JSON.stringify(newState));
+      return newState;
+    });
   };
+  // function to add a book to the TBR list
   const handleAddToTbReadList = async (book) => {
+    // creates object with relevant info
     const read = {
       title: book.volumeInfo.title,
       authors: book.volumeInfo.authors,
@@ -42,12 +63,20 @@ export const BookSearch = () => {
       thumbnail: book.volumeInfo.imageLinks.thumbnail,
     };
     await tbRead(read);
+    setAddedToTBR((prevState) => {
+      const newState = {
+        ...prevState,
+        [book.id]: true,
+      };
+      localStorage.setItem("addedToTBR", JSON.stringify(newState));
+      return newState;
+    });
   };
 
   return (
     <Container fluid className="social-container">
       <Row className="search-container justify-content-center mb-4">
-        <Col md={6}>
+        <Col md={3}>
           <InputGroup>
             <FormControl
               placeholder="Search for books"
@@ -55,18 +84,19 @@ export const BookSearch = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+            <Button
+              className="search-button"
+              variant="info"
               onClick={searchBooks}
             >
               Search
-            </button>
+            </Button>
           </InputGroup>
         </Col>
       </Row>
       <Row className="book-list p-10">
         {books.map((book) => (
-          <Col key={book.id} md={3} className="mb-4">
+          <Col key={book.id} md={4} className="mb-4">
             <Card className="h-100">
               <div className="d-flex justify-content-center">
                 <div className="p-3">
@@ -115,17 +145,15 @@ export const BookSearch = () => {
 
                 {showDescription === book.id && (
                   <div className="book-description">
-                    <strong className="text-lg font-bold mb-2">
-                      Description:{" "}
-                    </strong>
+                    <strong className="">Description: </strong>
                     <p className="text-gray-700">{description}</p>
                   </div>
                 )}
 
-                <div className="d-flex justify-content-center mt-3">
+                <div className="button-container">
                   <Button
                     variant="primary"
-                    className="mr-3"
+                    className=""
                     onClick={() => {
                       const bookDescription =
                         book.volumeInfo.description ||
@@ -143,20 +171,52 @@ export const BookSearch = () => {
                       : "Show Description"}
                   </Button>
 
-                  <Button
-                    variant="warning"
-                    className="mr-3"
-                    onClick={() => handleAddToTbReadList(book)}
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      addedToTBR[book.id] ? (
+                        <Tooltip id={`tooltip-tbr-${book.id}`}>
+                          Added to TBR List
+                        </Tooltip>
+                      ) : (
+                        <Tooltip id={`tooltip-tbr-${book.id}`}>
+                          Add to TBR List
+                        </Tooltip>
+                      )
+                    }
                   >
-                    Add to TBR List
-                  </Button>
+                    <Button
+                      variant="success"
+                      className=""
+                      onClick={() => handleAddToTbReadList(book)}
+                      disabled={addedToTBR[book.id]}
+                    >
+                      {addedToTBR[book.id] ? "Added!" : "Add to TBR List"}
+                    </Button>
+                  </OverlayTrigger>
 
-                  <Button
-                    variant="success"
-                    onClick={() => handleAddToReadList(book)}
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      addedToRead[book.id] ? (
+                        <Tooltip id={`tooltip-read-${book.id}`}>
+                          Added to Read List
+                        </Tooltip>
+                      ) : (
+                        <Tooltip id={`tooltip-read-${book.id}`}>
+                          Add to Read List
+                        </Tooltip>
+                      )
+                    }
                   >
-                    Add to Read List
-                  </Button>
+                    <Button
+                      variant="warning"
+                      onClick={() => handleAddToReadList(book)}
+                      disabled={addedToRead[book.id]}
+                    >
+                      {addedToRead[book.id] ? "Added!" : "Add to Read List"}
+                    </Button>
+                  </OverlayTrigger>
                 </div>
               </Card.Body>
             </Card>
